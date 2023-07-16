@@ -9,15 +9,8 @@
             <!-- 导航部分 -->
             <ul class="top-header-nav">
                 <li><a href="javascript:;" class="active">首页</a></li>
-                <li><a href="javascript:;">居家</a></li>
-                <li><a href="javascript:;">美食</a></li>
-                <li><a href="javascript:;">服饰</a></li>
-                <li><a href="javascript:;">母婴</a></li>
-                <li><a href="javascript:;">母婴</a></li>
-                <li><a href="javascript:;">母婴</a></li>
-                <li><a href="javascript:;">母婴</a></li>
-                <li><a href="javascript:;">母婴</a></li>
-                <li><a href="javascript:;">母婴</a></li>
+                <li v-for="item in items" :key="item.id"><a href="javascript:;">{{item.name}}</a></li>
+                
             </ul>
 
             <!-- 搜索区域 -->
@@ -39,6 +32,19 @@
 </template>
 
 <script setup>
+import {getCategoryApi} from '@/apis/layout'
+import { onMounted,ref } from 'vue';
+//获取一级导航的数据
+const items = ref([])
+const getCategory = async()=>{
+    const res = await getCategoryApi()
+    // console.log(res);
+    items.value = res.data.result
+}
+//挂载的时候调用api
+onMounted(()=>{
+    getCategory()
+})
 
 </script>
 <style lang="scss" scoped>
