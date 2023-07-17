@@ -9,7 +9,7 @@
             <!-- 导航部分 -->
             <ul class="top-header-nav">
                 <li><a href="javascript:;" class="active">首页</a></li>
-                <li v-for="item in items" :key="item.id"><a href="javascript:;">{{item.name}}</a></li>
+                <li v-for="item in CategoryStore.items" :key="item.id"><router-link to="/">{{item.name}}</router-link></li>
                 
             </ul>
 
@@ -32,19 +32,11 @@
 </template>
 
 <script setup>
-import {getCategoryApi} from '@/apis/layout'
-import { onMounted,ref } from 'vue';
-//获取一级导航的数据
-const items = ref([])
-const getCategory = async()=>{
-    const res = await getCategoryApi()
-    // console.log(res);
-    items.value = res.data.result
-}
-//挂载的时候调用api
-onMounted(()=>{
-    getCategory()
-})
+
+import { useCategoryStore } from '@/stores/Category.js'
+
+//使用pinia中的数据
+const CategoryStore = useCategoryStore()
 
 </script>
 <style lang="scss" scoped>
