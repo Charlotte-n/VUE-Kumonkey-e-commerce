@@ -2,9 +2,10 @@
   <LayoutFixed></LayoutFixed>
     <LayoutNav></LayoutNav>
     <LayoutHeader></LayoutHeader>
-    <h1>我是首页
-        <router-view></router-view>
-    </h1>
+
+<!--        <router-view :key="$route.fullPath"></router-view>-->
+  <router-view></router-view>
+
     <LayoutFooter></LayoutFooter>
     
 </template>

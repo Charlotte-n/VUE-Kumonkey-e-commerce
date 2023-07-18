@@ -9,7 +9,7 @@
       <!-- 导航部分 -->
       <ul class="top-header-nav">
         <li><a href="javascript:;" class="active">首页</a></li>
-        <li v-for="item in CategoryStore.items" :key="item.id"><router-link to="/">{{item.name}}</router-link></li>
+        <li v-for="item in CategoryStore.items" :key="item.id"><router-link :to="`/category/${item.id}`">{{item.name}}</router-link></li>
 
       </ul>
 

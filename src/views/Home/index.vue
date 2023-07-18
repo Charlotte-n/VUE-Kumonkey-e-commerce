@@ -1,15 +1,33 @@
 <template>
-  <h2>我是home</h2>
-  <div style="height: 1200px"></div>
+  <div class="container">
+    <HomeCategory></HomeCategory>
+    <HomeBanner></HomeBanner>
+  </div>
+  <HomeNews></HomeNews>
+  <HomeHot></HomeHot>
+  <HomeProduct></HomeProduct>
+<!--  测试home-pannel-->
+
+
+
 </template>
 
-<script>
-export default {
+<script setup>
+import HomeCategory from "@/views/Home/components/HomeCategory.vue";
+import HomeBanner from "@/views/Home/components/HomeBanner.vue";
+import HomeNews from "@/views/Home/components/HomeNews.vue";
+import HomeHot from "@/views/Home/components/HomeHot.vue";
+import HomeProduct from "@/views/Home/components/HomeProduct.vue";
+import HomePannel from "@/views/Home/components/HomePannel.vue";
 
-}
+
 </script>
 
-<style>
+<style lang="scss" scoped>
+.container{
+  display: flex;
+  justify-content: space-between;
+}
 
 </style>
 
