@@ -18,7 +18,7 @@ onMounted(()=>{
 <!--    写内容-->
     <ul class="goods-list">
       <li v-for="item in NewsList" :key="item.id">
-        <router-link to="/">
+        <router-link :to="`/detail/${item.id}`">
           <img v-lazy-img="item.picture" alt="">
           <p class="name">{{ item.name }}</p>
           <p class="price">￥{{item.price}}</p>
