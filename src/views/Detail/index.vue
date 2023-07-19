@@ -3,6 +3,7 @@ import {getDetailApi} from "@/apis/detail";
 import {useRoute} from "vue-router";
 import {ref,onMounted} from "vue";
 import DetailHot from "@/views/Detail/Components/DetailHot.vue";
+import ImageView from "@/composables/ImageView.vue";
 
 const DetailList = ref({})
 const route = useRoute()
@@ -35,6 +36,7 @@ onMounted(()=>getDetail())
       <div class="detail-goods">
         <div class="left">
 <!--          图片-->
+          <ImageView></ImageView>
 <!--          下面的信息-->
           <ul>
             <li>
@@ -103,7 +105,7 @@ onMounted(()=>getDetail())
 <!--              属性-->
               <div class="attr">
                 <ul>
-                  <li v-for="item in DetailList.details.properties" :key="item.value">
+                  <li v-for="item in DetailList.details.properties.slice(0,3)" :key="item.value">
                     <span>{{item.name}}</span>
                     <span>{{item.value}}</span>
                   </li>
@@ -115,8 +117,8 @@ onMounted(()=>getDetail())
         </div>
 <!--        热销榜-->
         <div class="hot">
-          <DetailHot class="hot1"></DetailHot>
-          <DetailHot></DetailHot>
+          <DetailHot class="hot1" :hotType="1"></DetailHot>
+          <DetailHot :hotType="2"></DetailHot>
 
         </div>
     </div>
@@ -143,6 +145,7 @@ onMounted(()=>getDetail())
         margin-top: 15px;
 
         ul {
+          margin-bottom: 15px;
           padding-left: 15px;
           display: flex;
 
