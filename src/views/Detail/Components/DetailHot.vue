@@ -46,9 +46,11 @@ onMounted(()=>getHotGoods())
 
 <style lang="scss">
 .goods-hot{
+  padding-top: 15px;
   text-align: center;
   background-color: #fff;
   margin-bottom: 10px;
+  border-radius: 5px;
   h3{
     margin:15px auto;
     width: 200px;

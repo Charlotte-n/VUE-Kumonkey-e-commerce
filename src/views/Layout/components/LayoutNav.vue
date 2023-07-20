@@ -1,15 +1,26 @@
 <template>
   <div class="app-topnav">
-        <div class="container">
+        <template v-if="false">
+          <div class="container">
             <ul>
-                <li><a href="javascript:;">xiaotuxian001</a></li>
-                <li><a href="javascript:;">退出登录</a></li>
-                <li><a href="javascript:;">我的订单</a></li>
-                <li><a href="javascript:;">会员中心</a></li>
-                <li><a href="javascript:;">帮助中心</a></li>
-                <li><a href="javascript:;">在线客服</a></li>
+              <li><a href="javascript:;">xiaotuxian001</a></li>
+              <li><a href="javascript:;">退出登录</a></li>
+              <li><a href="javascript:;">我的订单</a></li>
+              <li><a href="javascript:;">会员中心</a></li>
+              <li><a href="javascript:;">帮助中心</a></li>
+              <li><a href="javascript:;">在线客服</a></li>
             </ul>
-        </div>
+          </div>
+
+        </template>
+    <template v-else>
+      <ul>
+        <li><a href="/login">请先登录</a></li>
+        <li><a href="javascript:;">帮助中心</a></li>
+        <li><a href="javascript:;">在线客服</a></li>
+      </ul>
+
+    </template>
     </div>
 </template>
 

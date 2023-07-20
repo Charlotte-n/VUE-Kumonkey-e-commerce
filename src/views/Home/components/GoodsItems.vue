@@ -8,7 +8,7 @@ defineProps({
 </script>
 
 <template>
-  <router-link to="/">
+  <router-link :to="`detail/${item.id}`">
                   <img :src="item.picture" alt="">
                   <p class="name">{{item.name}}</p>
                   <p class="desc">{{item.desc}}</p>

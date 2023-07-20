@@ -18,7 +18,7 @@ onMounted(()=>getProduct())
     <HomePannel :title="item.name" v-for="item in ProudctList" :key="item.id">
       <div class="good">
         <div class="left">
-          <router-link to="/">
+          <router-link :to="`/detail/${item.id}`">
             <img :src="item.picture" alt="">
             <strong class="label">
               <span>{{item.name}}</span>

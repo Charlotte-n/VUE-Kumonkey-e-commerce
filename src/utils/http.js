@@ -1,4 +1,6 @@
 import axios from "axios";
+import { ElMessage } from 'element-plus'
+import 'element-plus/theme-chalk/el-message.css'
 
 const httpIntrance  = axios.create({
     baseURL:'http://pcapi-xiaotuxian-front-devtest.itheima.net',
@@ -16,6 +18,10 @@ httpIntrance.interceptors.request.use(function (config) {
 httpIntrance.interceptors.response.use(function (response) {
     return response;
   }, function (error) {
+    ElMessage({
+        type:'warning',
+        message:error.response.data.message
+    })
     return Promise.reject(error);
  });
 

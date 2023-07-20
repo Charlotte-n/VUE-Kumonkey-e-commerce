@@ -3,7 +3,7 @@ import {getDetailApi} from "@/apis/detail";
 import {useRoute} from "vue-router";
 import {ref,onMounted} from "vue";
 import DetailHot from "@/views/Detail/Components/DetailHot.vue";
-import ImageView from "@/composables/ImageView.vue";
+
 
 const DetailList = ref({})
 const route = useRoute()
@@ -13,6 +13,11 @@ const getDetail =async () =>{
   // console.log(res)
 }
 onMounted(()=>getDetail())
+
+// sku被操作时
+function skuChange(sku){
+  console.log(sku)
+}
 </script>
 
 <template>
@@ -36,7 +41,7 @@ onMounted(()=>getDetail())
       <div class="detail-goods">
         <div class="left">
 <!--          图片-->
-          <ImageView></ImageView>
+          <ImageView :imageList="DetailList.mainPictures"></ImageView>
 <!--          下面的信息-->
           <ul>
             <li>
@@ -85,6 +90,9 @@ onMounted(()=>getDetail())
             </dl>
           </div>
           <!-- sku组件 -->
+          <div class="sku">
+            <XtxSku :goods="DetailList" @change="skuChange"></XtxSku>
+          </div>
 
           <!-- 数据组件 -->
 
@@ -110,6 +118,8 @@ onMounted(()=>getDetail())
                     <span>{{item.value}}</span>
                   </li>
                 </ul>
+<!--                图片-->
+                <img :src="img" alt="" v-for="img in DetailList.details.pictures" :key="img">
               </div>
             </div>
 
@@ -138,11 +148,12 @@ onMounted(()=>getDetail())
     .detail-goods {
       background-color: #fff;
       display: flex;
-      justify-content: space-between;
+      //justify-content: space-between;
       border-radius: 5px;
 
       .left {
         margin-top: 15px;
+        margin-right: 50px;
 
         ul {
           margin-bottom: 15px;
@@ -216,7 +227,7 @@ onMounted(()=>getDetail())
           margin-top: 15px;
           margin-bottom: 15px;
           background-color: #f5f5f5;
-          width: 700px;
+          width: 500px;
           padding: 20px 0 10px 10px;
           margin-right: 25px;
           border-radius: 5px;
@@ -256,7 +267,9 @@ onMounted(()=>getDetail())
             }
           }
         }
-
+        .sku{
+          width: 500px;
+        }
         .button {
           padding-bottom: 15px;
 
@@ -289,6 +302,7 @@ onMounted(()=>getDetail())
                 //padding-top: 15px;
                 display: flex;
                 flex-wrap: wrap;
+                margin-bottom: 20px;
                 li{
                   width: 400px;
                   margin-top: 15px;
@@ -298,13 +312,17 @@ onMounted(()=>getDetail())
                   }
                 }
               }
+              img{
+                width: 100%;
+                border-radius: 5px;
+              }
             }
           }
         }
       }
       .hot{
         width: 280px;
-        background-color: #fff;
+        //background-color: #fff;
         border-radius: 5px;
 
       }
