@@ -1,9 +1,12 @@
 <script setup>
 import {reactive,ref} from "vue";
-import {getLoginApi} from "@/apis/user";
+import {useUserStore} from "@/stores/user";
 //消息弹出
 import { ElMessage } from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
+import {useRouter} from "vue-router";
+//实例化pinia实例
+const useUser = useUserStore()
 //校验
 //1.表单绑定
 const form = reactive({
@@ -37,17 +40,23 @@ const rules = {
 
 //3.统一校验
 const formRef = ref(null)
+const router = useRouter()
 function submit(){
   formRef.value.validate(async (value)=>{
     if(value){
       //全部成功的话调用接口
       //把form进行解构，之后传入接口中
-      // console.log(form)
-     const res = await getLoginApi(form)
+      //登录
+      //使用pinia来获取数据
+      await useUser.getUserData(form)
+      //1.弹出信息
       ElMessage({
         message:"登录成功，欢迎来到库猴电商",
         type:"success"
       })
+      //2.跳转页面
+      router.replace({path:'/'})
+
     }
   })
 }
