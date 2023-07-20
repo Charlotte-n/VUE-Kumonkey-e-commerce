@@ -49,6 +49,11 @@ const CategoryStore = useCategoryStore()
       width: 160px;
       align-items: center;
       margin: auto;
+      &:hover{
+        .layer{
+          display: block;
+        }
+      }
       .left-nav{
         display: flex;
         //来控制之间的空隙一样
@@ -67,10 +72,10 @@ const CategoryStore = useCategoryStore()
           //z-index: -1;
           color:#F28C28;
           border-radius: 5px;
-          //padding: 1px;
           a{
             color:#F28C28;
           }
+
         }
         a{
           color: rgba(255,255,255,0.8);
@@ -87,13 +92,12 @@ const CategoryStore = useCategoryStore()
          background-color:  rgba(255, 255, 255);
          color: #000;
          z-index: 999;
-         //padding: 0 15px;
+
+
          h4{
            padding: 15px 15px 0 15px;
 
            font-size: 20px;
-           //font-weight: normal;
-           //line-height: 80px;
          }
          ul{
            width: 100%;

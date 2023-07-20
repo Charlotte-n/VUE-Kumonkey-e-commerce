@@ -1,10 +1,21 @@
 <template>
   <div class="app-topnav">
-        <template v-if="false">
+<!--    判断是否是登录状态，使用token来进行-->
+        <template v-if="useUser.userData.token">
           <div class="container">
             <ul>
-              <li><a href="javascript:;">xiaotuxian001</a></li>
-              <li><a href="javascript:;">退出登录</a></li>
+              <li><a href="javascript:;">{{useUser.userData.account}}</a></li>
+              <li>
+                <el-popconfirm
+                    title="确定要退出吗"
+                    confirm-button-text="确认"
+                    cancel-button-text="取消"
+                @confirm="confirm">
+                  <template #reference>
+                    <a href="javascript:;">退出登录</a>
+                  </template>
+                </el-popconfirm>
+              </li>
               <li><a href="javascript:;">我的订单</a></li>
               <li><a href="javascript:;">会员中心</a></li>
               <li><a href="javascript:;">帮助中心</a></li>
@@ -25,7 +36,18 @@
 </template>
 
 <script setup>
+import {useUserStore} from "@/stores/user";
+import {useRouter} from "vue-router";
 
+const useUser = useUserStore()
+const router = useRouter()
+const confirm = ()=>{
+  //退出业务实现
+  //1.清除用户信息
+  useUser.clearUserInfo()
+  //2.退回登陆页面
+  router.push({path:`/login`})
+}
 </script>
 
 <style lang="scss" scoped>
