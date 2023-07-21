@@ -20,12 +20,7 @@
       </div>
 
       <!-- 购物车 -->
-      <div class="car">
-        <i class="iconfont icon-gouwuche1"></i>
-        <span>0</span>
-
-
-      </div>
+      <HeaderCart></HeaderCart>
     </div>
   </header>
 
@@ -35,6 +30,7 @@
 //vueuse
 import { useScroll } from '@vueuse/core'
 import { useCategoryStore } from '@/stores/Category.js'
+import HeaderCart from "@/views/Layout/components/HeaderCart.vue";
 const {y} = useScroll(window)
 
 //使用pinia中的数据
@@ -123,29 +119,7 @@ const CategoryStore = useCategoryStore()
       }
     }
 
-    //购物车部分
-    .car{
-      width: 50px;
-      margin-left: 120px;
-      position: relative;
-      .icon-gouwuche1{
-        font-size: 30px;
-        font-family: Arial, Helvetica, sans-serif;
-      }
-      span{
-        position: absolute;
-        font-size: 10px;
-        top: 1px;
-        left: 20px;
-        background-color: #FF7518;
-        border-radius: 10px;
-        color: #fff;
-        padding: 1px 2px;
-      }
 
-
-
-    }
   }
 }
 </style>

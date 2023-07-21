@@ -48,7 +48,7 @@ function submit(){
       //把form进行解构，之后传入接口中
       //登录
       //使用pinia来获取数据
-      await useUser.getUserData(form)
+      await useUser.getUserData(form)//请求有错误的话，会走请求拦截器的错误部分，返回一个Promise，相应的话也会相应错误信息
       //1.弹出信息
       ElMessage({
         message:"登录成功，欢迎来到库猴电商",

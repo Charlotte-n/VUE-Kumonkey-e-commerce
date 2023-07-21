@@ -3,6 +3,9 @@ import {getDetailApi} from "@/apis/detail";
 import {useRoute} from "vue-router";
 import {ref,onMounted} from "vue";
 import DetailHot from "@/views/Detail/Components/DetailHot.vue";
+import {useCartStore} from "@/stores/addCart";
+import { ElMessage } from 'element-plus'
+import 'element-plus/theme-chalk/el-message.css'
 
 
 const DetailList = ref({})
@@ -14,9 +17,35 @@ const getDetail =async () =>{
 }
 onMounted(()=>getDetail())
 
+let skuObj = {}
 // sku被操作时
 function skuChange(sku){
-  console.log(sku)
+  // console.log(sku)
+  skuObj = sku
+}
+//购物车操作
+const count = ref(1)
+const useCart = useCartStore()
+function changCount(){
+
+}
+function addcart(){
+  //当数量一发生改变，并且规格也选择的话，把商品信息弄成个对象传递给管理数据的pinia的添加购物车数量的方法
+  if(skuObj.skuId){
+    useCart.addCart({
+      id:DetailList.value.id,
+      name:DetailList.value.name,
+      picture:DetailList.value.mainPictures[0],
+      price:DetailList.value.price,
+      count:count.value,
+      skuId:skuObj.skuId,
+      attrsText:skuObj.specsText,
+      selected:true
+    })
+
+  }else{
+    ElMessage.warning("请选择规格")
+  }
 }
 </script>
 
@@ -95,10 +124,10 @@ function skuChange(sku){
           </div>
 
           <!-- 数据组件 -->
-
+          <el-input-number v-model="count" :min="1" @change="changCount" />
           <!-- 按钮组件 -->
           <div class="button">
-            <el-button color="#FF7518" style="color:#fff " class="button-1">加入购物车</el-button>
+            <el-button color="#FF7518" style="color:#fff " class="button-1" @click="addcart">加入购物车</el-button>
           </div>
         </div>
       </div>
@@ -271,6 +300,7 @@ function skuChange(sku){
           width: 500px;
         }
         .button {
+          margin-top: 20px;
           padding-bottom: 15px;
 
           .button-1 {

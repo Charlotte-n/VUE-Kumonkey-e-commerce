@@ -12,7 +12,7 @@
                     cancel-button-text="取消"
                 @confirm="confirm">
                   <template #reference>
-                    <a href="javascript:;">退出登录</a>
+                    <a href="javascript:;" @click="clearCart">退出登录</a>
                   </template>
                 </el-popconfirm>
               </li>
@@ -39,6 +39,7 @@
 import {useUserStore} from "@/stores/user";
 import {useRouter} from "vue-router";
 
+
 const useUser = useUserStore()
 const router = useRouter()
 const confirm = ()=>{
@@ -47,7 +48,9 @@ const confirm = ()=>{
   useUser.clearUserInfo()
   //2.退回登陆页面
   router.push({path:`/login`})
+
 }
+
 </script>
 
 <style lang="scss" scoped>
