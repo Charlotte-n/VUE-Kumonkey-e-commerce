@@ -93,7 +93,7 @@ function remove(i){
       <div class="bottom">
         <p>共{{cart.allCount}}件商品，已选择{{cart.selectCount}}件，商品合计：￥<span>{{cart.selectPrice.toFixed(2)}}</span></p>
         <div class="total">
-          <el-button size="large" class="btn" >下单结算</el-button>
+          <el-button size="large" class="btn" @click="$router.push(`/checkorder`)">下单结算</el-button>
       </div>
     </div>
   </div>

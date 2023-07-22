@@ -1,7 +1,69 @@
 <script setup>
+import {checkorderApi,createOrder} from "@/apis/checkorder";
+import {onMounted,ref} from "vue";
+import {useRouter} from "vue-router";
+import {useCartStore} from "@/stores/addCart";
 
+const router = useRouter()
+const checkorderAddress = ref({})
+const checkData = ref({})
+const cart = useCartStore()
+//结算页的接口
+const getcheckOderApi =async ()=>{
+  const res = await checkorderApi()
+  // console.log(res)
+  //找默认地址为0的
+  checkorderAddress.value = res.data.result.userAddresses.find(item=>item.isDefault === 0)
+  checkData.value = res.data.result
+  // console.log(checkData.value)
+}
+onMounted(()=>getcheckOderApi())
+//对话框的显示和隐藏
+const showChange = ref(false)
+//地址框的激活
+const activeId = ref({})
+function show(i){
+  // console.log(i)
+  activeId.value = i
+}
+function confirm(){
+  //点击确定把获得的对象赋值给checkorderAddress
+  checkorderAddress.value = activeId.value
+  showChange.value = false
 
+}
+function cancle(){
+  showChange.value = false
+}
 
+//创建订单接口
+const createorder = async ()=>{
+  const res = await createOrder({
+    deliveryTimeType:1,
+    payType:1,
+    payChannel:1,
+    buyerMessage:'',
+    goods:checkData.value.goods.map(item=>{
+      return {
+        skuId:item.skuId,
+        count:item.count
+      }
+    }),
+    addressId:checkorderAddress.value.id
+  })
+  const orderId = res.data.result.id
+  //路由跳转,携带着参数
+  router.push(
+      {
+        path:'/pay',
+        query:{
+          id:orderId
+        }
+      }
+  )
+  //更新购物车
+  cart.updateCart()
+}
 </script>
 
 <template>
@@ -24,14 +86,21 @@
     <h3 class="check-title">收货地址</h3>
     <div class="address">
       <div class="left">
-        需要添加地址才能修改订单
+        <ul  class="detail">
+          <li><span>收<i />货<i />人：</span>{{ checkorderAddress.receiver }}</li>
+          <li><span>联系方式：</span>{{ checkorderAddress.contact }}</li>
+          <li><span>收货地址：</span>{{ checkorderAddress.fullLocation }} {{ checkorderAddress.address }}</li>
+        </ul>
       </div>
       <div class="right">
         <a href="javascript:;">
-          <el-button color="#F28C28" class="btn">添加地址</el-button>
+          <button class="btn" style="margin-right: 10px">添加地址</button>
+          <button class="btn" @click="showChange = !showChange">切换地址</button>
+
         </a>
       </div>
     </div>
+
 <!--    商品信息-->
     <h3 class="check-title">商品信息</h3>
     <div class="goods-detail">
@@ -40,24 +109,24 @@
         <tr>
           <th class="line1">商品信息</th>
           <th class="line2">单价</th>
-          <th class="line2">单价</th>
-          <th class="line2">单价</th>
-          <th class="line2">单价</th>
+          <th class="line2">数量</th>
+          <th class="line2">小计</th>
+          <th class="line2">实付</th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="i in 3" :key="i">
+        <tr v-for="i in checkData.goods" :key="i.id">
           <td>
-            <img src="" alt="">
+            <img :src="i.picture" alt="">
             <div class="info">
-              <p class="title">你似乎发放红包</p>
-              <p class="spec">凤求凰若非群昵称</p>
+              <p class="title">{{i.name}}</p>
+              <p class="spec">{{i.attrsText}}</p>
             </div>
           </td>
-          <td>89</td>
-          <td>1</td>
-          <td>89</td>
-          <td>89</td>
+          <td>{{i.price}}</td>
+          <td>{{i.count}}</td>
+          <td>{{i.payPrice}}</td>
+          <td>{{i.totalPayPrice}}</td>
 
         </tr>
         </tbody>
@@ -81,28 +150,57 @@
     <div class="all">
       <dl>
         <dt>商品件数</dt>
-        <dd>1件</dd>
+        <dd>{{checkData.summary?.goodsCount}}件</dd>
       </dl>
       <dl>
         <dt>商品总价</dt>
-        <dd>￥97</dd>
+        <dd>￥{{checkData.summary?.totalPrice}}</dd>
       </dl>
       <dl>
-        <dt>运   费</dt>
-        <dd>8元</dd>
+        <dt>运&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;费</dt>
+        <dd>{{checkData.summary?.postFee}}元</dd>
       </dl>
       <dl>
         <dt>应付总额</dt>
-        <dd class="price">￥97</dd>
+        <dd class="price">￥{{checkData.summary?.totalPayPrice}}</dd>
       </dl>
     </div>
 <!--    按钮-->
     <div  class="btn">
-      <el-button class="btn2" color="#F28C28" disabled size="large">提交订单</el-button>
+      <a @click="createorder">
+        <el-button class="btn2" color="#F28C28"  size="large">提交订单</el-button>
+      </a>
     </div>
 
   </div>
 </div>
+<!--  添加地址-->
+<!--  切换地址-->
+  <el-dialog
+      v-model="showChange"
+      title="切换收货地址"
+      width="30%"
+      center
+  >
+    <div class="addressWrapper">
+      <div class="item">
+        <ul v-for="i in checkData.userAddresses" :key="i.id" @click="show(i)" :class="{active:activeId.id === i.id}">
+          <li><span>收货人：</span>{{i.receiver}}</li>
+          <li><span>联系方式：</span>{{i.contact}}</li>
+          <li><span>收货地址：</span>{{i.fullLocation+i.address}}</li>
+
+        </ul>
+      </div>
+    </div>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="cancle">取消</el-button>
+        <el-button type="primary" @click="confirm">
+          确定
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <style scoped lang="scss">
@@ -128,21 +226,41 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      height: 65px;
+      height: 120px;
       margin-top: 20px;
       border: 1px solid rgba(245,245,245);
       border-radius: 5px;
       .left{
-        padding-left: 5px;
+        padding-left: 15px;
         color: #F28C28;
+        .detail{
+          li{
+            margin-top: 5px;
+            &:first-child{
+              margin-top: 0;
+            }
+          }
+        }
+
       }
       .right{
         padding-right: 25px;
-        .btn{
-          color: white;
+        a{
+          display: inline-block;
+
+          .btn{
+            color: white;
+            border:1px solid #F28C28 ;
+            border-radius: 5px;
+            padding: 5px 10px;
+            background-color: #F28C28;
+            cursor: pointer;
+
+          }
         }
       }
     }
+
     .goods-detail{
       margin-top: 15px;
         table{
@@ -219,29 +337,60 @@
     }
     .all{
       margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+
       dl{
         display: flex;
         justify-content: flex-end;
         margin-bottom: 20px;
+        text-align: center;
         dt{
+          width: 100px;
           margin-right: 100px;
           color: #999999;
+        }
+        dd{
+          width: 50px;
         }
         .price{
           color: $priceColor;
           font-size: 17px;
         }
-        dd{
 
-        }
       }
 
     }
-    .btn{
+    >.btn{
       margin-top: 20px;
       text-align: right;
+      .btn2{
+        color: white;
+      }
     }
 
+
   }
+}
+.addressWrapper{
+  .item{
+    height: 300px;
+    overflow: hidden;
+    ul {
+      margin-bottom: 10px;
+      border-radius: 5px;
+      padding: 10px 20px;
+      cursor: pointer;
+      background: rgb(153, 153, 153,0.3);
+      li {
+        margin-bottom: 5px;
+      }
+    }
+  }
+}
+.active{
+
+      background: rgb(251, 206, 177,0.3) !important;
+
 }
 </style>
