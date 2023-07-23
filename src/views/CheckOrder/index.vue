@@ -13,7 +13,7 @@ const getcheckOderApi =async ()=>{
   const res = await checkorderApi()
   // console.log(res)
   //找默认地址为0的
-  checkorderAddress.value = res.data.result.userAddresses.find(item=>item.isDefault === 0)
+  checkorderAddress.value = res.data.result.userAddresses[0]
   checkData.value = res.data.result
   // console.log(checkData.value)
 }

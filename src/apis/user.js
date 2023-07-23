@@ -13,3 +13,13 @@ export const getLoginApi = ({account,password})=>{
             }
         })
 }
+
+//封装获取猜你喜欢的api
+export const getLiketApi = ({limit=4})=>{
+    return httpIntrance({
+        url:'/goods/relevant',
+        params: {
+            limit
+        }
+    })
+}
