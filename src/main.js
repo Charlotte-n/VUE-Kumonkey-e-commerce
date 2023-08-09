@@ -5,6 +5,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
 import App from './App.vue'
+//引入路由
 import router from './router'
 import { getCatogry } from './apis/test'
 import {LazyPlugin} from "@/directives/LazyImag";
@@ -19,6 +20,7 @@ const app = createApp(App)
 const pinia = createPinia()
 app.use(pinia)
 pinia.use(piniaPluginPersistedstate)
+//路由的配置使用
 app.use(router)
 app.use(LazyPlugin)
 app.use(componentPlugin)

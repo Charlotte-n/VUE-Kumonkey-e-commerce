@@ -14,7 +14,9 @@ export function useCategory(){
     onMounted(()=>getCategory())
 
 //路由守卫
+//     to为目标路由组件
     onBeforeRouteUpdate((to)=>{
+        //使用最新的路由参数请求最新的分类数据
         getCategory(to.params.id)
     })
     return {
