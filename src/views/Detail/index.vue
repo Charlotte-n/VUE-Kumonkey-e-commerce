@@ -158,7 +158,6 @@ function addcart(){
         <div class="hot">
           <DetailHot class="hot1" :hotType="1"></DetailHot>
           <DetailHot :hotType="2"></DetailHot>
-
         </div>
     </div>
   </div>

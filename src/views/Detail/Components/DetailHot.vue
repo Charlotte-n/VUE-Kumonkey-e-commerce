@@ -5,15 +5,11 @@ import {useRoute} from "vue-router";
 import {computed} from "vue";
 const route = useRoute()
 const HotGoodsList = ref([])
-
-
-
 const props = defineProps({
   hotType:{
     type:Number
 }
 })
-
 const TYPEMAP = {
   1:'24小时热榜',
   2:'周热榜'

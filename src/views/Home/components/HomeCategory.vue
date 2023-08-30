@@ -1,18 +1,28 @@
 <script setup>
+import {ref} from "vue";
 import {useCategoryStore} from "@/stores/Category";
 const CategoryStore = useCategoryStore()
+// const layers = ref()
+const activeIndex = ref()
+const onMouseenter = (index)=>{
+  activeIndex.value = index
+}
+const onMousemove = ()=>{
+  activeIndex.value = ''
+}
+
 </script>
 
 <template>
 <div class="home-category">
   <div class="menu">
     <ul>
-      <li v-for="item in CategoryStore.items" :key="item.id" class="left-nav">
+      <li v-for="(item,index) in CategoryStore.items" :key="item.id" class="left-nav" @mouseenter="onMouseenter(index)" @mouseleave="onMousemove">
         <router-link to="/">{{item.name}}</router-link>
         <router-link to="/" v-for="i in item.children.slice(0,1)" :key="i.id">{{i.name}}</router-link>
         <i>></i>
 <!--        layer区域-->
-        <div class="layer">
+        <div :class="{'active':activeIndex === index}" class="layer">
           <h4>分类推荐</h4>
           <ul>
             <li v-for="i in item.goods" :key="i.id">
@@ -154,14 +164,20 @@ const CategoryStore = useCategoryStore()
          }
        }
         //当点击li的时候，显示layer，首先layer是none显示的
-        &:hover {
-          .layer {
-            display: block;
-          }
-        }
+        //&:hover {
+        //  .layer {
+        //    display: block;
+        //  }
+        //}
       }
     }
   }
+}
+.active{
+  display: block!important;
+}
+.active1{
+  display: none !important;
 }
 
 </style>

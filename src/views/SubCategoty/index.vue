@@ -37,7 +37,6 @@ function tabChange(){
 //列表的无线加载功能
 const disabled = ref(false)
 async function load(){
-
   reqData.value.page++
   //获得新数据
   const res = await getGoodListApi(reqData.value)

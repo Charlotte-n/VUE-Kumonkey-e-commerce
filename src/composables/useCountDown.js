@@ -2,7 +2,6 @@ import {ref} from "vue"
 import dayjs from "dayjs";
 import {computed,onUnmounted} from "vue";
 //封装倒计时的函数
-
 export const CountDown = ()=>{
     let timer = null
     const time = ref(0)
